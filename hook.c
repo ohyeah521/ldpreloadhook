@@ -41,8 +41,6 @@
 #include <stdlib.h>
 #include <signal.h>
 
-#define DPRINTF(format, args...)	fprintf(stderr, format, ## args)
-
 #ifndef RTLD_NEXT
 #define RTLD_NEXT ((void *) -1l)
 #endif
@@ -60,9 +58,18 @@ typedef void (*sighandler_t)(int);
 static int data_w_fd = -1, hook_fd = -1, data_r_fd = -1;
 
 #ifdef __ANDROID__
+
+#include <android/log.h>
+#define LOG_TAG "LibHook"
+#define LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
+#define DPRINTF(...)  __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
+
 static const char *data_w_file = "/data/local/tmp/write_data.bin";
 static const char *data_r_file = "/data/local/tmp/read_data.bin";
 #else
+
+#define DPRINTF(format, args...)        fprintf(stderr, format, ## args)
+
 static const char *data_w_file = "/tmp/write_data.bin";
 static const char *data_r_file = "/tmp/read_data.bin"; 
 #endif

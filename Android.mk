@@ -2,6 +2,8 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
+LOCAL_LDLIBS := -llog
+
 LOCAL_SRC_FILES := \
   hook.c
 LOCAL_C_INCLUDE := $(SYSROOT)/usr/include/
