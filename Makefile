@@ -1,10 +1,12 @@
-all:
-	gcc -Wall -Wextra -Wwrite-strings -fPIC -c -o hook.o hook.c
-	gcc -Wall -Wextra -Wwrite-strings -shared -o hook.so hook.o -ldl
+LOCAL_ARM_MODE := arm
 
-android:
-	NDK_ARCH=arm ndk-gcc -Wall -Wextra -Wwrite-strings -fPIC -c -o hook.o hook.c
-	NDK_ARCH=arm ndk-gcc -Wall -Wextra -Wwrite-strings -shared -o hook.so hook.o -ldl
+all:
+	ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk 
+
+install:
+	adb push libs/armeabi/libhook.so /data/local/tmp/libhook.so
 
 clean:
-	rm -f *.so *.o
+	rm -rf libs/
+	rm -rf obj/
+	rm *~
